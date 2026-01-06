@@ -22,8 +22,16 @@ public class GuestListManager {
             return false;
         }
     }
-    public Guest findGuest(String guestName) {
-        if(guestByName.containsKey(guestName))return guestByName.get(guestName);
+    public Guest findGuest(String guestNameAndTag) {
+        //split string that passed in to make sure it's the right person
+        String[] splitted = guestNameAndTag.split(",");
+        String guestName =splitted[0];
+        String guestTag=splitted[2];
+        if(guestByName.containsKey(guestName)) {//if guest exists, make sure it's the right person-check the tag:
+            if(guestTag.equals(guestByName.get(guestName))) {
+                return guestByName.get(guestNameAndTag);
+            }
+        }
         return null;
     }
     public int getGuestCount() { return guests.size(); }

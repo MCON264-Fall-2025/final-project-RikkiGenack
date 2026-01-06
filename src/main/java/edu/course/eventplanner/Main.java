@@ -54,12 +54,13 @@ public class Main {
         }
         //To add a guest here's code to pass in to add guest:
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter guest name: ");
+        System.out.println("Enter guest first and last name: ");
         String guestName = sc.nextLine();
         //can do it with numbers after - this category 1...
         System.out.println("Enter guest category: ");
         String guestCategory = sc.nextLine();
         Guest guest = new Guest(guestName, guestCategory);
         guestListManager.addGuest(guest);
+        //when doing findGuest() pass in name , tag
     }
 }
