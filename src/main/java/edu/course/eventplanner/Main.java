@@ -1,9 +1,11 @@
 package edu.course.eventplanner;
 
 import edu.course.eventplanner.model.Guest;
+import edu.course.eventplanner.model.Task;
 import edu.course.eventplanner.model.Venue;
 import edu.course.eventplanner.service.GuestListManager;
 import edu.course.eventplanner.service.SeatingPlanner;
+import edu.course.eventplanner.service.TaskManager;
 import edu.course.eventplanner.service.VenueSelector;
 
 import java.util.ArrayList;
@@ -18,49 +20,109 @@ public class Main {
         Scanner kb = new Scanner(System.in);
         //add option to say I'm done
         System.out.println("Event Planner Mini — see README for instructions.");
-        System.out.println("Enter your event budget: ");
-        double budget = kb.nextDouble();
 
-        System.out.println("Enter number of guests: ");
-        int guestAmt = kb.nextInt();
-        //need to use sorting algorithm or tree?!
 
-        //create a switch statement with dif methods and what to deal with
-        List<Venue> venues = generateVenues();
-        VenueSelector venSelect = new VenueSelector(venues);
-        Venue myVenue = venSelect.selectVenue(budget, guestAmt);//this either returns null or the right venue
+
+
+       //this either returns null or the right venue
         //For venues still have to: If tied, smallest capacity that still fits
         //You must use a sorting algorithm or a Binary Search Tree to justify your choice.
 
-        //GuestListManager done!
+
 
         GuestListManager guestListManager = new GuestListManager();
+        int guestAmt;
 
-        for (Guest g : GenerateGuests(guestAmt)) {
-            guestListManager.addGuest(g);
-        }
-        //add switch here now with guest options
 
-        SeatingPlanner seatingPlanner = new SeatingPlanner(myVenue);
+        //make sure to add sc.nextLine(); so ints don't get swallowed by buffer
 
-        int option=0;//switch this after
-        //menu:
-        switch (option) {
-            case 1:
+        int option = displayMenu();
+        while(option!=0){
+            switch (option) {
+
+                case 1:
+                    System.out.println("Enter number of guests: ");
+                    guestAmt = kb.nextInt();
+                    for (Guest g : GenerateGuests(guestAmt)) {
+                        guestListManager.addGuest(g);
+                    }
+                    TaskManager tm = new TaskManager();
+                    Scanner sc = new Scanner(System.in);
+                    String guestName;
+                    String guestTag;
+                    Venue myVenue = null;
+                    String task;
+                    Task myTask;
+                    break;
+                case 2://adding a guest:
+                    System.out.println("Enter guest first and last name: ");
+                    guestName = sc.nextLine();
+                    //can do it with numbers after - this category 1...
+                    System.out.println("Enter guest category: ");
+                    guestTag = sc.nextLine();
+                    Guest guest = new Guest(guestName, guestTag);
+                    guestListManager.addGuest(guest);
+                    break;
+                case 3://removing a guest:
+                    //can update this similar to find to include tag if have time??
+                    System.out.println("Enter guest first and last name: ");
+                    guestName = kb.nextLine();
+                    guestListManager.removeGuest(guestName);
+                    break;
+                case 4: //select a venue
+                    System.out.println("Enter your event budget: ");
+                    double budget = kb.nextDouble();
+
+                    System.out.println("Enter number of guests: ");
+                    guestAmt = kb.nextInt();
+                    //need to use sorting algorithm or tree?!
+                    List<Venue> venues = generateVenues();
+                    VenueSelector venSelect = new VenueSelector(venues);
+                    myVenue = venSelect.selectVenue(budget, guestAmt);
+                    break;
+                case 5:
+                    //finish this code here and in its method
+                    if(myVenue==null) //if case 4 never happened
+                    {
+                        //add code to go up to case 4 first
+                    }
+                    SeatingPlanner seatingPlanner = new SeatingPlanner(myVenue);
                 break;
-            case 2:
-                break;
-
+                case 6://adding task
+                    System.out.println("Enter task you would like to add: ");
+                    task = kb.nextLine();
+                    myTask = new Task(task);
+                    tm.addTask(myTask);
+                    break;
+                case 7:
+                    tm.executeNextTask();
+                    break;
+                case 8:
+                    tm.undoLastTask();
+                case 9:
+            }
         }
-        //To add a guest here's code to pass in to add guest:
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter guest first and last name: ");
-        String guestName = sc.nextLine();
-        //can do it with numbers after - this category 1...
-        System.out.println("Enter guest category: ");
-        String guestCategory = sc.nextLine();
-        Guest guest = new Guest(guestName, guestCategory);
-        guestListManager.addGuest(guest);
+
+
+
+
+
         //when doing findGuest() pass in name , tag
+    }
+    public static int displayMenu(){
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Enter your choice: " +
+                "1.Load sample data\n" +
+                "2.Add guest\n" +
+                "3.Remove guest\n" +
+                "4.Select venue\n" +
+                "5.Generate seating chart\n" +
+                "6.Add preparation task\n" +
+                "7.Execute next task\n" +
+                "8.Undo last task\n" +
+                "9.Print event summary" +
+                "0. to exit.");
+        int option = kb.nextInt();
+        return option;
     }
 }
