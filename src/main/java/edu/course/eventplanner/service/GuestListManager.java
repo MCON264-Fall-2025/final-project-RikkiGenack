@@ -12,9 +12,10 @@ public class GuestListManager {
         System.out.println("Guest added successfully.");
     }
     public boolean removeGuest(String guestName) {
-        if (guestByName.containsKey(guestName)) {
-            guestByName.remove(guestName);
-            guests.remove(guestByName.get(guestName));
+        Guest guest = findGuest(guestName);
+        if (guest!=null) {
+            guestByName.remove(guest.getName());
+            guests.remove(guest);
             System.out.println("Guest removed successfully.");
             return true;
         } else {
@@ -28,7 +29,7 @@ public class GuestListManager {
         String guestNameSplitted =splitted[0];
         String guestTag=splitted[2];
         if(guestByName.containsKey(guestNameSplitted)) {//if guest exists, make sure it's the right person-check the tag:
-            if(guestTag.equals(guestByName.get(guestNameSplitted))) {
+            if(guestTag.equals(guestByName.get(guestNameSplitted).getGroupTag())) {
                 return guestByName.get(guestNameSplitted);
             }
         }
