@@ -22,17 +22,12 @@ public class Main {
         System.out.println("Event Planner Mini — see README for instructions.");
 
 
-
-
        //this either returns null or the right venue
         //For venues still have to: If tied, smallest capacity that still fits
         //You must use a sorting algorithm or a Binary Search Tree to justify your choice.
 
-
-
         GuestListManager guestListManager = new GuestListManager();
         int guestAmt;
-
 
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
@@ -93,18 +88,24 @@ public class Main {
                     tm.addTask(myTask);
                     break;
                 case 7:
-                    tm.executeNextTask();
+                    if(tm.executeNextTask()==null){
+                        System.out.println("No tasks to complete.");
+                    }
                     break;
                 case 8:
-                    tm.undoLastTask();
+                    if(tm.undoLastTask()!=null){
+                        System.out.println("Task undone successfully.");
+                    } else {
+                        System.out.println("No tasks to undo.");
+                    }
                     break;
                 case 9:
+                    //make something to print everything out
+                    System.out.println("Event Summary:");
+                    System.out.println("completed tasks:" + tm.completed.toString() );
             }
             option = displayMenu();
         }
-
-
-
 
 
         //when doing findGuest() pass in name , tag

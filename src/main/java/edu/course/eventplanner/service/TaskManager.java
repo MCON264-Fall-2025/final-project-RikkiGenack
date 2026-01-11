@@ -15,12 +15,15 @@ public class TaskManager {
             return upcoming.remove();//does this return what is being removed?
 
         }
-        System.out.println("No tasks to complete.");
             return null;
     }
     public Task undoLastTask() {
-    upcoming.add(completed.pop());
-    return upcoming.peek();
+    if(completed.size()>0) {
+        upcoming.add(completed.pop());
+        return upcoming.peek();
+    } else {
+        return null;
+    }
     }
     public int remainingTaskCount() { return upcoming.size(); }
 }
