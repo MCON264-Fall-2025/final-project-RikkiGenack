@@ -8,7 +8,7 @@ import edu.course.eventplanner.service.SeatingPlanner;
 import edu.course.eventplanner.service.TaskManager;
 import edu.course.eventplanner.service.VenueSelector;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,12 +34,11 @@ public class Main {
         int guestAmt;
 
 
-        //make sure to add sc.nextLine(); so ints don't get swallowed by buffer
+        //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
         int option = displayMenu();
         while(option!=0){
             switch (option) {
-
                 case 1:
                     System.out.println("Enter number of guests: ");
                     guestAmt = kb.nextInt();
@@ -47,7 +46,6 @@ public class Main {
                         guestListManager.addGuest(g);
                     }
                     TaskManager tm = new TaskManager();
-                    Scanner sc = new Scanner(System.in);
                     String guestName;
                     String guestTag;
                     Venue myVenue = null;
@@ -55,11 +53,11 @@ public class Main {
                     Task myTask;
                     break;
                 case 2://adding a guest:
-                    System.out.println("Enter guest first and last name: ");
-                    guestName = sc.nextLine();
+                    System.out.println("Enter guest name: ");
+                    guestName = kb.nextLine();
                     //can do it with numbers after - this category 1...
                     System.out.println("Enter guest category: ");
-                    guestTag = sc.nextLine();
+                    guestTag = kb.nextLine();
                     Guest guest = new Guest(guestName, guestTag);
                     guestListManager.addGuest(guest);
                     break;
@@ -67,7 +65,7 @@ public class Main {
                     //can update this similar to find to include tag if have time??
                     System.out.println("Enter guest first and last name: ");
                     guestName = kb.nextLine();
-                    guestListManager.removeGuest(guestName);
+                    guestListManager.removeGuest(guestName);//make this into a bool, if true- worked, else didn't
                     break;
                 case 4: //select a venue
                     System.out.println("Enter your event budget: ");
@@ -82,7 +80,7 @@ public class Main {
                     break;
                 case 5:
                     //finish this code here and in its method
-                    if(myVenue==null) //if case 4 never happened
+                    if(myVenue!=null) //if case 4 never happened
                     {
                         //add code to go up to case 4 first
                     }
@@ -99,8 +97,10 @@ public class Main {
                     break;
                 case 8:
                     tm.undoLastTask();
+                    break;
                 case 9:
             }
+            option = displayMenu();
         }
 
 

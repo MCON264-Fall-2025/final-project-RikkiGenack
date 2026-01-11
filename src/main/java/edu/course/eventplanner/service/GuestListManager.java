@@ -11,6 +11,7 @@ public class GuestListManager {
         guestByName.put(guest.getName(), guest);
         System.out.println("Guest added successfully.");
     }
+    //need to fix this bc it's only taking in first name, unless pass in full name and tag  here too
     public boolean removeGuest(String guestName) {
         Guest guest = findGuest(guestName);
         if (guest!=null) {

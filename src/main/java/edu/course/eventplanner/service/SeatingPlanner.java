@@ -30,7 +30,6 @@ public class SeatingPlanner {
            }//change if and else so it just adds guests to a queue, name them by number or something
            //then afterwords add things to the hashmap.
            }//add guests to wrong tables when there's not enough seats at right table
-       }
         return null;
     }
 
