@@ -6,7 +6,7 @@ import java.util.*;
 
 import static java.lang.String.valueOf;
 
-public class SeatingPlanner {
+public class SeatingPlanner{
     private final Venue venue;
 
     public SeatingPlanner(Venue venue) {
@@ -48,8 +48,10 @@ public class SeatingPlanner {
                     currList.add(currQueue.poll());//add a guest to it's table
                 }
             }
-
         }
+
+        //Binary Search Tree for storing tables by table number
+
         if(seatingMap.isEmpty()){
             return null;
         }

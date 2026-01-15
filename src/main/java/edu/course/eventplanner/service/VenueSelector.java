@@ -27,8 +27,8 @@ public class VenueSelector {
                 return Integer.compare(v1.getCapacity(), v2.getCapacity());
             }
         });
-        if(validVenues.size()>0)
-            return validVenues.get(0);
+        if(!validVenues.isEmpty())
+            return validVenues.getFirst();
         return null;
     }
 }

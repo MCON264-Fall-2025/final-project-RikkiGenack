@@ -8,7 +8,8 @@ public class Generators {
         return List.of(
             new Venue("Community Hall",1500,40,5,8),
             new Venue("Garden Hall",2500,60,8,8),
-            new Venue("Grand Ballroom",5000,120,15,8)
+            new Venue("Grand Ballroom",5000,120,15,8),
+            new Venue("Palace",1500,100,15,8)
         );
     }
     public static List<Guest> GenerateGuests(int n) {

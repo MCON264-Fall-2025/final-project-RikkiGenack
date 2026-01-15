@@ -10,7 +10,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EventPlannerTests {
+public class GuestTests {
     GuestListManager glm = new GuestListManager();
     LinkedList<Guest> guests = new LinkedList<>();
     Map<String, Guest> guestByName = new HashMap<>();
@@ -30,8 +30,11 @@ public class EventPlannerTests {
 
     @Test
     void removingExistingGuestReturnsTrue() {
+        String name = guest.getName();
+        String tag = guest.getGroupTag();
+        String param = name + "," + tag;
         glm.addGuest(guest);
-        assertTrue(glm.removeGuest(guest.getName()));
+        assertTrue(glm.removeGuest(param));
     }
     @Test
     void removingExistingGuestReturnsFalse() {
@@ -41,7 +44,8 @@ public class EventPlannerTests {
     @Test
     void findGuestReturnsCorrectName() {
         glm.addGuest(guest);
-        Guest result = glm.findGuest("Sarah");
+        String param = guest.getName() + "," + guest.getGroupTag();
+        Guest result = glm.findGuest(param);
         assertEquals(guest, result);
     }
 
@@ -50,5 +54,3 @@ public class EventPlannerTests {
         assertNull(glm.findGuest("Jake"));
     }
 }
-
-// so far tested guest methods
