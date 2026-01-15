@@ -7,35 +7,28 @@ import static edu.course.eventplanner.util.Generators.generateVenues;
 
 public class VenueSelector {
     private final List<Venue> venues;
+
     public VenueSelector(List<Venue> venues) { this.venues = venues; }
     public Venue selectVenue(double budget, int guestCount) {
-        Scanner kb = new Scanner(System.in);
-        System.out.println("Your venues withing budget are: ");
-        int j = 1;
+        ArrayList<Venue> validVenues = new ArrayList<>();
         for(int i  = 0; i < venues.size(); i++) {//go through each venue to see which one is within budget and capcaity
             if (venues.get(i).getCost() <= budget && venues.get(i).getCapacity() >= guestCount) {
-                System.out.println("Option " + j + " : "+ venues.get(i).getName());
-
-                j++;
-            } else {
-                System.out.println("There are no venues within your budget");
+                validVenues.add(venues.get(i));
             }
         }
-
-        //You must use a sorting algorithm or a Binary Search Tree to justify your choice.
-        //bc now it let's them select but it should be:
-        // From all valid venues, select the best venue:
-        //Lowest cost
-        //If tied, smallest capacity that still fits
-
-        System.out.println("Enter the option number of the venue you would like to select: ");
-        String selectedVen =kb.nextLine();
-        //use get name to get the right venue:
-        for(int i  = 0; i < venues.size(); i++) {
-        if(venues.get(i).getName().equals(selectedVen)) {
-            return venues.get(i);
-        }
-        }
+        Collections.sort(validVenues, new Comparator<Venue>() {
+            @Override
+            public int compare(Venue v1, Venue v2) {
+                // Sort by cost
+                if (v1.getCost() != v2.getCost()) {
+                    return Double.compare(v1.getCost(), v2.getCost());
+                }
+                // Sort by capacity
+                return Integer.compare(v1.getCapacity(), v2.getCapacity());
+            }
+        });
+        if(validVenues.size()>0)
+            return validVenues.get(0);
         return null;
     }
 }

@@ -18,17 +18,13 @@ import static edu.course.eventplanner.util.Generators.generateVenues;
 public class Main {
     public static void main(String[] args) {
         Scanner kb = new Scanner(System.in);
-        //add option to say I'm done
         System.out.println("Event Planner Mini — see README for instructions.");
-
-
-       //this either returns null or the right venue
-        //For venues still have to: If tied, smallest capacity that still fits
-        //You must use a sorting algorithm or a Binary Search Tree to justify your choice.
 
         GuestListManager guestListManager = new GuestListManager();
         int guestAmt;
-
+        List<Venue> venues = null;
+        TaskManager tm = null;
+        Venue myVenue = null;
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
         int option = displayMenu();
@@ -40,12 +36,12 @@ public class Main {
                     for (Guest g : GenerateGuests(guestAmt)) {
                         guestListManager.addGuest(g);
                     }
-                    TaskManager tm = new TaskManager();
+                    tm = new TaskManager();
                     String guestName;
                     String guestTag;
-                    Venue myVenue = null;
                     String task;
                     Task myTask;
+                    venues = generateVenues();
                     break;
                 case 2://adding a guest:
                     System.out.println("Enter guest name: ");
@@ -55,12 +51,15 @@ public class Main {
                     guestTag = kb.nextLine();
                     Guest guest = new Guest(guestName, guestTag);
                     guestListManager.addGuest(guest);
+                    System.out.println("Guest added successfully.");
                     break;
                 case 3://removing a guest:
                     //can update this similar to find to include tag if have time??
                     System.out.println("Enter guest first and last name: ");
                     guestName = kb.nextLine();
-                    guestListManager.removeGuest(guestName);//make this into a bool, if true- worked, else didn't
+                    if(guestListManager.removeGuest(guestName)==true)//make this into a bool, if true- worked, else didn't
+                   System.out.println("Guest removed successfully.");
+                    else System.out.println("Guest not found.");
                     break;
                 case 4: //select a venue
                     System.out.println("Enter your event budget: ");
@@ -68,10 +67,14 @@ public class Main {
 
                     System.out.println("Enter number of guests: ");
                     guestAmt = kb.nextInt();
-                    //need to use sorting algorithm or tree?!
-                    List<Venue> venues = generateVenues();
+
                     VenueSelector venSelect = new VenueSelector(venues);
                     myVenue = venSelect.selectVenue(budget, guestAmt);
+                    if(myVenue==null){
+                        System.out.println("No venue found.");
+                    } else {
+                        System.out.println("Selected venue: " + myVenue.getName());
+                    }
                     break;
                 case 5:
                     //finish this code here and in its method
@@ -90,7 +93,7 @@ public class Main {
                 case 7:
                     if(tm.executeNextTask()==null){
                         System.out.println("No tasks to complete.");
-                    }
+                    } System.out.println("Task completed");
                     break;
                 case 8:
                     if(tm.undoLastTask()!=null){
@@ -102,7 +105,7 @@ public class Main {
                 case 9:
                     //make something to print everything out
                     System.out.println("Event Summary:");
-                    System.out.println("completed tasks:" + tm.completed.toString() );
+                    System.out.println("completed tasks:" );
             }
             option = displayMenu();
         }
