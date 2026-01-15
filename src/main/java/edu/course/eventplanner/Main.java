@@ -10,6 +10,7 @@ import edu.course.eventplanner.service.VenueSelector;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import static edu.course.eventplanner.util.Generators.GenerateGuests;
@@ -25,6 +26,7 @@ public class Main {
         List<Venue> venues = null;
         TaskManager tm = null;
         Venue myVenue = null;
+        Map<Integer, List<Guest>> seating = null;
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
         int option = displayMenu();
@@ -36,12 +38,14 @@ public class Main {
                     for (Guest g : GenerateGuests(guestAmt)) {
                         guestListManager.addGuest(g);
                     }
+                    System.out.println("Sample guests loaded successfully: " + guestListManager.getAllGuests().toString() + ".");
                     tm = new TaskManager();
                     String guestName;
                     String guestTag;
                     String task;
                     Task myTask;
                     venues = generateVenues();
+                    System.out.println("Sample venues loaded successfully: " + venues.toString() + ".");
                     break;
                 case 2://adding a guest:
                     System.out.println("Enter guest name: ");
@@ -57,7 +61,10 @@ public class Main {
                     //can update this similar to find to include tag if have time??
                     System.out.println("Enter guest first and last name: ");
                     guestName = kb.nextLine();
-                    if(guestListManager.removeGuest(guestName)==true)//make this into a bool, if true- worked, else didn't
+                    System.out.println("Enter guest category: ");
+                    guestTag = kb.nextLine();
+                    String param = guestName + "," + guestTag;
+                    if(guestListManager.removeGuest(param)==true)//make this into a bool, if true- worked, else didn't
                    System.out.println("Guest removed successfully.");
                     else System.out.println("Guest not found.");
                     break;
@@ -77,12 +84,12 @@ public class Main {
                     }
                     break;
                 case 5:
-                    //finish this code here and in its method
-                    if(myVenue!=null) //if case 4 never happened
-                    {
-                        //add code to go up to case 4 first
+                    if(myVenue!=null)
+                    { SeatingPlanner seatingPlanner = new SeatingPlanner(myVenue);
+                        seating = seatingPlanner.generateSeating(guestListManager.getAllGuests());
+                        System.out.println("Seating chart generated successfully.");
                     }
-                    SeatingPlanner seatingPlanner = new SeatingPlanner(myVenue);
+                   System.out.println("Cannot generate seating chart without a venue.");
                 break;
                 case 6://adding task
                     System.out.println("Enter task you would like to add: ");
@@ -104,14 +111,15 @@ public class Main {
                     break;
                 case 9:
                     //make something to print everything out
-                    System.out.println("Event Summary:");
-                    System.out.println("completed tasks:" );
+                    System.out.println("Event Summary:/nGuests: " + guestListManager.getAllGuests() +
+                            "/n Event Venue: " + myVenue + "\n Event Seating" + seating);
+
+
+
             }
             option = displayMenu();
         }
 
-
-        //when doing findGuest() pass in name , tag
     }
     public static int displayMenu(){
         Scanner kb = new Scanner(System.in);
