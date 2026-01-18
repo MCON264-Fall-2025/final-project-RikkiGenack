@@ -31,8 +31,7 @@ SeatingPlanner:
 To generate seating, I used a map, arrayList and queue to organize the seating. 
 I looped through all guests and added them to the map based on their category.
 I then added as many guests as possible within the same category to a map with numbers
-as the key and the guests as the value.
-**add binary search tree notes
+as the key and the guests as the value and created a Binary Search Tree to sort the seating properly. 
 
 Main:
 In main I used a switch statement to call the appropriate method based on the user input.

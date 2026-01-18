@@ -3,6 +3,7 @@ package edu.course.eventplanner;
 import edu.course.eventplanner.model.Guest;
 import edu.course.eventplanner.model.Task;
 import edu.course.eventplanner.model.Venue;
+import edu.course.eventplanner.service.BSTseating;
 import edu.course.eventplanner.service.GuestListManager;
 import edu.course.eventplanner.service.SeatingPlanner;
 import edu.course.eventplanner.service.TaskManager;
@@ -22,11 +23,12 @@ public class Main {
         System.out.println("Event Planner Mini — see README for instructions.");
 
         GuestListManager guestListManager = new GuestListManager();
-        int guestAmt;
+        int guestAmt = 0;
         List<Venue> venues = null;
         TaskManager tm = null;
         Venue myVenue = null;
         Map<Integer, List<Guest>> seating = null;
+        BSTseating.BinarySearchTree bst = null;
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
         int option = displayMenu();
@@ -35,10 +37,13 @@ public class Main {
                 case 1:
                     System.out.println("Enter number of guests: ");
                     guestAmt = kb.nextInt();
+                    kb.nextLine();
+                    System.out.println("Sample guests loaded successfully:");
                     for (Guest g : GenerateGuests(guestAmt)) {
                         guestListManager.addGuest(g);
+                        System.out.print(g.getName() + " - " + g.getGroupTag() + ", 	");
                     }
-                    System.out.println("Sample guests loaded successfully: " + guestListManager.getAllGuests().toString() + ".");
+
                     tm = new TaskManager();
                     String guestName;
                     String guestTag;
@@ -50,7 +55,7 @@ public class Main {
                 case 2://adding a guest:
                     System.out.println("Enter guest name: ");
                     guestName = kb.nextLine();
-                    //can do it with numbers after - this category 1...
+
                     System.out.println("Enter guest category: ");
                     guestTag = kb.nextLine();
                     Guest guest = new Guest(guestName, guestTag);
@@ -58,22 +63,23 @@ public class Main {
                     System.out.println("Guest added successfully.");
                     break;
                 case 3://removing a guest:
-                    //can update this similar to find to include tag if have time??
                     System.out.println("Enter guest first and last name: ");
                     guestName = kb.nextLine();
                     System.out.println("Enter guest category: ");
                     guestTag = kb.nextLine();
                     String param = guestName + "," + guestTag;
                     if(guestListManager.removeGuest(param)==true)//make this into a bool, if true- worked, else didn't
-                   System.out.println("Guest removed successfully.");
+                        System.out.println("Guest removed successfully.");
                     else System.out.println("Guest not found.");
                     break;
                 case 4: //select a venue
                     System.out.println("Enter your event budget: ");
                     double budget = kb.nextDouble();
+                    kb.nextLine();
 
                     System.out.println("Enter number of guests: ");
                     guestAmt = kb.nextInt();
+                    kb.nextLine();
 
                     VenueSelector venSelect = new VenueSelector(venues);
                     myVenue = venSelect.selectVenue(budget, guestAmt);
@@ -88,9 +94,27 @@ public class Main {
                     { SeatingPlanner seatingPlanner = new SeatingPlanner(myVenue);
                         seating = seatingPlanner.generateSeating(guestListManager.getAllGuests());
                         System.out.println("Seating chart generated successfully.");
+                        System.out.println("Seating chart:");
+                        for (int i = 0; i < myVenue.getTables(); i++) {
+                            List<Guest> tableGuests = seating.get(i);
+                            System.out.print("Table " + i + ": ");
+                            for (Guest g : tableGuests) {
+                                System.out.print(g.getName() + "(" + g.getGroupTag() + ") ");
+                            }
+                            System.out.println();
+                        }
+
+                        //Binary Search Tree for storing tables by table number
+                        bst =
+                                new BSTseating().new BinarySearchTree();
+                        for(int i=0; i<myVenue.getTables();i++) {
+                            List<Guest> gs = seating.get(i);
+                            bst.insert(i, gs);
+                        }
+                    } else {
+                        System.out.println("Cannot generate seating chart without a venue.");
                     }
-                   System.out.println("Cannot generate seating chart without a venue.");
-                break;
+                    break;
                 case 6://adding task
                     System.out.println("Enter task you would like to add: ");
                     task = kb.nextLine();
@@ -110,12 +134,14 @@ public class Main {
                     }
                     break;
                 case 9:
-                    //make something to print everything out
-                    System.out.println("Event Summary:/nGuests: " + guestListManager.getAllGuests() +
-                            "/n Event Venue: " + myVenue + "\n Event Seating" + seating);
-
-
-
+                    System.out.println("Event Summary: " +
+                            "\n Event Venue: " + myVenue.getName() + " \nAmount of Guests: " + guestAmt);
+                    if(!tm.completed.isEmpty()) {
+                        System.out.println("Completed Tasks: " + tm.completed);
+                    }
+                    if(!tm.upcoming.isEmpty()) {
+                        System.out.println("Upcoming Tasks: " + tm.upcoming);
+                    }
             }
             option = displayMenu();
         }
@@ -132,9 +158,10 @@ public class Main {
                 "6.Add preparation task\n" +
                 "7.Execute next task\n" +
                 "8.Undo last task\n" +
-                "9.Print event summary" +
+                "9.Print event summary\n" +
                 "0. to exit.");
         int option = kb.nextInt();
+        kb.nextLine();
         return option;
     }
 }
