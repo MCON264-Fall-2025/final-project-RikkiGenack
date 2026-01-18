@@ -49,9 +49,7 @@ public class SeatingPlanner{
                 }
             }
         }
-
         //Binary Search Tree for storing tables by table number
-
         if(seatingMap.isEmpty()){
             return null;
         }

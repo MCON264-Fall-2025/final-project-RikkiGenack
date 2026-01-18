@@ -10,7 +10,6 @@ public class GuestListManager {
         guests.add(guest);
         guestByName.put(guest.getName().toLowerCase(), guest);
     }
-    //need to fix this bc it's only taking in first name, unless pass in full name and tag  here too
     public boolean removeGuest(String guestName) {
         Guest guest = findGuest(guestName);
         if (guest!=null) {

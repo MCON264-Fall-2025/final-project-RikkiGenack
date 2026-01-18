@@ -10,7 +10,7 @@ public class TaskManager {
     public Task executeNextTask() {
         if(upcoming.size()>0) {
             Task task = upcoming.peek();
-            completed.add(task);
+            completed.push(task);
             return upcoming.remove();
 
         }
