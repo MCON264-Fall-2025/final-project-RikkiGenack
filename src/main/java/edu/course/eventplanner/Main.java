@@ -43,7 +43,7 @@ public class Main {
                         guestListManager.addGuest(g);
                         System.out.print(g.getName() + " - " + g.getGroupTag() + ", 	");
                     }
-
+                    
                     tm = new TaskManager();
                     String guestName;
                     String guestTag;
@@ -69,7 +69,7 @@ public class Main {
                     guestTag = kb.nextLine();
                     String param = guestName + "," + guestTag;
                     if(guestListManager.removeGuest(param)==true)//make this into a bool, if true- worked, else didn't
-                        System.out.println("Guest removed successfully.");
+                   System.out.println("Guest removed successfully.");
                     else System.out.println("Guest not found.");
                     break;
                 case 4: //select a venue
@@ -112,9 +112,9 @@ public class Main {
                             bst.insert(i, gs);
                         }
                     } else {
-                        System.out.println("Cannot generate seating chart without a venue.");
+                   System.out.println("Cannot generate seating chart without a venue.");
                     }
-                    break;
+                   break;
                 case 6://adding task
                     System.out.println("Enter task you would like to add: ");
                     task = kb.nextLine();
@@ -137,10 +137,10 @@ public class Main {
                     System.out.println("Event Summary: " +
                             "\n Event Venue: " + myVenue.getName() + " \nAmount of Guests: " + guestAmt);
                     if(!tm.completed.isEmpty()) {
-                        System.out.println("Completed Tasks: " + tm.completed);
-                    }
+                    	System.out.println("Completed Tasks: " + tm.completed);
+                    } 
                     if(!tm.upcoming.isEmpty()) {
-                        System.out.println("Upcoming Tasks: " + tm.upcoming);
+                    	System.out.println("Upcoming Tasks: " + tm.upcoming);
                     }
             }
             option = displayMenu();

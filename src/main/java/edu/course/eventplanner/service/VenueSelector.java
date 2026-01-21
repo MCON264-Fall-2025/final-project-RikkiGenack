@@ -3,8 +3,6 @@ package edu.course.eventplanner.service;
 import edu.course.eventplanner.model.Venue;
 import java.util.*;
 
-import static edu.course.eventplanner.util.Generators.generateVenues;
-
 public class VenueSelector {
     private final List<Venue> venues;
 
@@ -28,7 +26,7 @@ public class VenueSelector {
             }
         });
         if(!validVenues.isEmpty())
-            return validVenues.getFirst();
+            return validVenues.get(0);
         return null;
     }
 }
