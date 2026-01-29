@@ -22,7 +22,7 @@ public class GuestListManager {
     }
     public Guest findGuest(String guestName) {
         //split string that passed in to make sure it's the right person
-        if(guestByName.size()>0) {
+        if(!guestByName.isEmpty()) {
             String[] splitted = guestName.split(",",2);
             String guestNameSplitted = splitted[0];
             String guestTag = splitted[1];

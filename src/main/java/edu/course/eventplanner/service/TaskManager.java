@@ -8,16 +8,15 @@ public class TaskManager {
     public final Stack<Task> completed = new Stack<>();
     public void addTask(Task task) {upcoming.add(task);}
     public Task executeNextTask() {
-        if(upcoming.size()>0) {
-            Task task = upcoming.peek();
+        if(!upcoming.isEmpty()) {
+            Task task = upcoming.remove();
             completed.push(task);
-            return upcoming.remove();
-
+            return task;
         }
         return null;
     }
     public Task undoLastTask() {
-        if(completed.size()>0) {
+        if(!completed.isEmpty()) {
             Task t = completed.pop();
             upcoming.add(t);
             return t;
