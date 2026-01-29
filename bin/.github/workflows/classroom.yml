@@ -1,0 +1,43 @@
+name: Autograding Tests
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Copy instructor tests
+        run: |
+          mkdir -p src/test/java/edu/course/eventplanner
+          cp .github/tests/*.java src/test/java/edu/course/eventplanner/
+      - name: Autograding
+        uses: education/autograding@v1
+        id: autograder
+        continue-on-error: true
+      - name: Autograding Reporter
+        uses: education/autograding-grading-reporter@v1
+        env:
+          VENUE_SELECTION_TESTS_RESULTS: "${{steps.autograder.outputs.VENUE_SELECTION_TESTS_RESULTS}}"
+          GUEST_MANAGEMENT_TESTS_RESULTS: "${{steps.autograder.outputs.GUEST_MANAGEMENT_TESTS_RESULTS}}"
+          SEATING_ALGORITHM_TESTS_RESULTS: "${{steps.autograder.outputs.SEATING_ALGORITHM_TESTS_RESULTS}}"
+          TASK_WORKFLOW_AND_UNDO_TESTS_RESULTS: "${{steps.autograder.outputs.TASK_WORKFLOW_AND_UNDO_TESTS_RESULTS}}"
+          STUDENT_UNIT_TESTS_COVERAGE_RESULTS: "${{steps.autograder.outputs.STUDENT_UNIT_TESTS_COVERAGE_RESULTS}}"
+          README_DOCUMENTATION_RESULTS: "${{steps.autograder.outputs.README_DOCUMENTATION_RESULTS}}"
+        with:
+          runners: venue-selection-tests,guest-management-tests,seating-algorithm-tests,task-workflow-and-undo-tests,student-unit-tests-coverage,readme-documentation
