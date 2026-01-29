@@ -30,6 +30,13 @@ public class Main {
         Map<Integer, List<Guest>> seating = null;
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
+        tm = new TaskManager();
+        String guestName;
+        String guestTag;
+        String task;
+        Task myTask;
+
+
         int option = displayMenu();
         while(option!=0){
             switch (option) {
@@ -42,14 +49,9 @@ public class Main {
                         guestListManager.addGuest(g);
                         System.out.print(g.getName() + " - " + g.getGroupTag() + ", 	");
                     }
-                    
-                    tm = new TaskManager();
-                    String guestName;
-                    String guestTag;
-                    String task;
-                    Task myTask;
 
-                    System.out.println("Sample venues loaded successfully: " + venues.toString() + ".");
+
+                    System.out.println("Sample venues loaded successfully: " + venues + ".");
                     break;
                 case 2://adding a guest:
                     System.out.println("Enter guest name: ");
