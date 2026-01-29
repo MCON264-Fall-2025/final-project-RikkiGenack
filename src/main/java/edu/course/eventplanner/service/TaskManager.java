@@ -18,7 +18,8 @@ public class TaskManager {
     public Task undoLastTask() {
         if(!completed.isEmpty()) {
             Task t = completed.pop();
-            upcoming.add(t);
+            //AI helped me with this line to add task to front of queue
+            ((LinkedList<Task>) upcoming).addFirst(t);
             return t;
         } else {
             return null;

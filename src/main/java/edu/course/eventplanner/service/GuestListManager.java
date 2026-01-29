@@ -24,9 +24,11 @@ public class GuestListManager {
         //split string that passed in to make sure it's the right person
         if(!guestByName.isEmpty()) {
             String[] splitted = guestName.split(",",2);
-            String guestNameSplitted = splitted[0];
+            //if guest isn't passed in correctly, return null
+            if (splitted.length!=2) return null;
+            String guestNameSplitted = splitted[0].toLowerCase();
             String guestTag = splitted[1];
-            if (guestByName.containsKey(guestNameSplitted.toLowerCase())) {//if guest exists, make sure it's the right person-check the tag:
+            if (guestByName.containsKey(guestNameSplitted)) {//if guest exists, make sure it's the right person-check the tag:
                 if (guestTag.equals(guestByName.get(guestNameSplitted).getGroupTag())) {
                     return guestByName.get(guestNameSplitted);
                 }
