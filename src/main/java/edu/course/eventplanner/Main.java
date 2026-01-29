@@ -3,7 +3,6 @@ package edu.course.eventplanner;
 import edu.course.eventplanner.model.Guest;
 import edu.course.eventplanner.model.Task;
 import edu.course.eventplanner.model.Venue;
-import edu.course.eventplanner.service.BSTseating;
 import edu.course.eventplanner.service.GuestListManager;
 import edu.course.eventplanner.service.SeatingPlanner;
 import edu.course.eventplanner.service.TaskManager;
@@ -24,11 +23,11 @@ public class Main {
 
         GuestListManager guestListManager = new GuestListManager();
         int guestAmt = 0;
-        List<Venue> venues = null;
+        List<Venue> venues = generateVenues();
+        VenueSelector venSelect = new VenueSelector(venues);
         TaskManager tm = null;
         Venue myVenue = null;
         Map<Integer, List<Guest>> seating = null;
-        BSTseating.BinarySearchTree bst = null;
         //make sure to add kb.nextLine(); so ints don't get swallowed by buffer
 
         int option = displayMenu();
@@ -49,7 +48,7 @@ public class Main {
                     String guestTag;
                     String task;
                     Task myTask;
-                    venues = generateVenues();
+
                     System.out.println("Sample venues loaded successfully: " + venues.toString() + ".");
                     break;
                 case 2://adding a guest:
@@ -68,7 +67,7 @@ public class Main {
                     System.out.println("Enter guest category: ");
                     guestTag = kb.nextLine();
                     String param = guestName + "," + guestTag;
-                    if(guestListManager.removeGuest(param)==true)//make this into a bool, if true- worked, else didn't
+                    if(guestListManager.removeGuest(param))
                    System.out.println("Guest removed successfully.");
                     else System.out.println("Guest not found.");
                     break;
@@ -81,7 +80,7 @@ public class Main {
                     guestAmt = kb.nextInt();
                     kb.nextLine();
 
-                    VenueSelector venSelect = new VenueSelector(venues);
+
                     myVenue = venSelect.selectVenue(budget, guestAmt);
                     if(myVenue==null){
                         System.out.println("No venue found.");
@@ -95,21 +94,13 @@ public class Main {
                         seating = seatingPlanner.generateSeating(guestListManager.getAllGuests());
                         System.out.println("Seating chart generated successfully.");
                         System.out.println("Seating chart:");
-                        for (int i = 0; i < myVenue.getTables(); i++) {
+                        for (int i = 1; i < myVenue.getTables(); i++) {
                             List<Guest> tableGuests = seating.get(i);
                             System.out.print("Table " + i + ": ");
                             for (Guest g : tableGuests) {
                                 System.out.print(g.getName() + "(" + g.getGroupTag() + ") ");
                             }
                             System.out.println();
-                        }
-
-                        //Binary Search Tree for storing tables by table number
-                        bst =
-                                new BSTseating().new BinarySearchTree();
-                        for(int i=0; i<myVenue.getTables();i++) {
-                            List<Guest> gs = seating.get(i);
-                            bst.insert(i, gs);
                         }
                     } else {
                    System.out.println("Cannot generate seating chart without a venue.");

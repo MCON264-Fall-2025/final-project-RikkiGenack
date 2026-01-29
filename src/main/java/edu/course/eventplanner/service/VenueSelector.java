@@ -14,6 +14,7 @@ public class VenueSelector {
                 validVenues.add(venues.get(i));
             }
         }
+        // If there is a tie in venue cost, sort by the lower capacity to minimize unused seats
         Collections.sort(validVenues, new Comparator<Venue>() {
             @Override
             public int compare(Venue v1, Venue v2) {

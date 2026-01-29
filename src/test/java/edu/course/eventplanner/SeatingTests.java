@@ -81,7 +81,7 @@ public class SeatingTests{
         Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
 
         // All Family guests should start at the first table
-        List<Guest> firstTable = seating.get(0);
+        List<Guest> firstTable = seating.get(1);
         int familyCount = 0;
         for (Guest g : firstTable) {
             if (g.getGroupTag().equals("Family")) familyCount++;
@@ -104,8 +104,8 @@ public class SeatingTests{
         Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
 
         // Check that the first table is full (2 guests) and the next table has the remaining guest
-        assertEquals(2, seating.get(0).size(), "First table should be filled to seat limit");
-        assertEquals(1, seating.get(1).size(), "Extra guest should spill to next table");
+        assertEquals(2, seating.get(1).size(), "First table should be filled to seat limit");
+        assertEquals(1, seating.get(2).size(), "Extra guest should spill to next table");
     }
 }
 

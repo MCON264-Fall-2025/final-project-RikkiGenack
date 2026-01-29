@@ -3,7 +3,6 @@ package edu.course.eventplanner.service;
 import edu.course.eventplanner.model.*;
 
 import java.util.*;
-import static java.lang.String.valueOf;
 
 public class SeatingPlanner {
     private final Venue venue;
@@ -33,7 +32,9 @@ public class SeatingPlanner {
             }
 
         } // add guests to wrong tables when there's not enough seats at right table
-        Map<Integer, List<Guest>> seatingMap = new HashMap<>();
+
+        //TreeMap for sorting seats by table number
+        Map<Integer, List<Guest>> seatingMap = new TreeMap<>();
 
         for (int i = 0; i < tableNums; i++) {
             // this loop puts an empty list of guests in each table
@@ -59,7 +60,6 @@ public class SeatingPlanner {
                 }
             }
         }
-
         // Now seat any extras in tables that still have space
         for (int i = 0; i < tableNums && !extras.isEmpty(); i++) {
             List<Guest> currList = seatingMap.get(i);
