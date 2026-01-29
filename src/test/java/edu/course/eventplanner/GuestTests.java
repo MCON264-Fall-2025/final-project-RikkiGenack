@@ -26,7 +26,7 @@ public class GuestTests {
     @Test
     void addingGuestIncreasesListWithName() {
         glm.addGuest(guest);
-        assertEquals("Sarah", glm.getGuests().get(0).getName());
+        assertEquals("Sarah", glm.getAllGuests().get(0).getName());
     }
 
     @Test
